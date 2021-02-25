@@ -8,27 +8,43 @@
         <ion-title>{{ $route.params.id }}</ion-title>
       </ion-toolbar>
     </ion-header>
-    
+
     <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">{{ $route.params.id }}</ion-title>
-        </ion-toolbar>
-      </ion-header>
-    
-      <div id="container">
-        <strong class="capitalize">{{ $route.params.id }}</strong>
-        <p>Explore <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-      </div>
+      <Timer />
+      <ion-reorder-group :disabled="false">
+        <!-- Default reorder icon, start aligned items -->
+        <ion-item>
+          <ion-reorder slot="start"></ion-reorder>
+          <ion-label> Item 3 </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-reorder slot="start"></ion-reorder>
+          <ion-label> Item 4 </ion-label>
+        </ion-item>
+      </ion-reorder-group>
     </ion-content>
   </ion-page>
 </template>
 
-<script lang="ts">
-import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+<script lang="js">
+import {
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonMenuButton,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+  IonItem,
+  IonReorder,
+  IonReorderGroup,
+  // IonCard,
+  IonLabel,
+} from "@ionic/vue";
+import Timer from './Timer';
 
 export default {
-  name: 'Folder',
+  name: "Folder",
   components: {
     IonButtons,
     IonContent,
@@ -36,34 +52,34 @@ export default {
     IonMenuButton,
     IonPage,
     IonTitle,
-    IonToolbar
-  }
-}
+    IonToolbar,
+    IonReorder,
+    IonReorderGroup,
+    IonItem,
+    IonLabel,
+    Timer,
+  },
+};
 </script>
 
 <style scoped>
-#container {
-  text-align: center;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+.timer-container{
+  display: flex;
+  justify-content: center;
+  padding: 10px;
 }
-
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+.timer {
+  border: 2px solid var(--ion-color-primary);
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-  color: #8c8c8c;
-  margin: 0;
-}
-
-#container a {
-  text-decoration: none;
+.timer .time-count {
+  font-size: 36px;
+  font-weight: bold;
 }
 </style>
