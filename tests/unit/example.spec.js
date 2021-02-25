@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import Folder from '@/views/Folder.vue'
 
 describe('Folder.vue', () => {
@@ -8,7 +8,7 @@ describe('Folder.vue', () => {
         id: 'Outbox'
       }
     }
-    const wrapper = mount(Folder, {
+    const wrapper = shallowMount(Folder, {
       global: {
         mocks: {
           $route: mockRoute

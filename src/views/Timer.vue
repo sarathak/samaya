@@ -2,11 +2,11 @@
   <ion-card id="container">
     <div>
       <div class="timer-container">
-        <div class="timer">
-          <span class="time-count">{{minute}}:{{second}}</span>
-          <button class="play-pause">
-            <ion-icon name="play-outline" :md="play" />
-          </button>
+        <div class="timer" @click="toggleRun()">
+          <span class="time-count">{{ minute }}:{{ second }}</span>
+          <span class="play-pause">
+            <ion-icon name="play-outline" :md="running?pause:play" />
+          </span>
         </div>
       </div>
     </div>
@@ -15,15 +15,21 @@
 
 <script lang="js">
 import {
-    IonIcon
+    IonIcon,
+    IonCard,
 } from "@ionic/vue";
-import { play } from 'ionicons/icons';
+import { 
+  play,
+  pause 
+} from 'ionicons/icons';
 
 export default {
   name: "Folder",
   data(){
       return {
+          running:false,
           play,
+          pause,
           time:25*60,
       }
   },
@@ -37,14 +43,24 @@ export default {
   },
   mounted(){
       this.tm = setInterval(() => {
+          if(!this.running)
+          return;
+
           this.$nextTick(()=>{
               this.time --;
           })
-      }, 100);
+      }, 1000);
   },
   components: {
-      IonIcon
+      IonIcon,
+      IonCard
   },
+  methods:{
+    toggleRun(){
+      this.running = !this.running;
+
+    }
+  }
 };
 </script>
 
