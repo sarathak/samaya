@@ -4,6 +4,7 @@ import router from './router';
 
 import { IonicVue } from '@ionic/vue';
 import createNewStore from './store';
+import { plugin as Slicksort } from 'vue-slicksort';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/vue/css/core.css';
@@ -27,6 +28,7 @@ const store = createNewStore();
 const app = createApp(App)
   .use(IonicVue)
   .use(store)
+  .use(Slicksort)
   .use(router);
   
 router.isReady().then(() => {

@@ -54,7 +54,6 @@ import { play, pause } from "ionicons/icons";
 import { mapState } from "vuex";
 
 export default {
-  name: "Folder",
   data() {
     return {
       play,

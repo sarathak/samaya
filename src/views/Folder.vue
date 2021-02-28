@@ -11,6 +11,7 @@
 
     <ion-content :fullscreen="true">
       <Timer />
+      <Tasks />
       <ion-reorder-group :disabled="false">
         <!-- Default reorder icon, start aligned items -->
         <ion-item>
@@ -26,7 +27,7 @@
   </ion-page>
 </template>
 
-<script lang="js">
+<script>
 import {
   IonButtons,
   IonContent,
@@ -42,6 +43,7 @@ import {
   IonLabel,
 } from "@ionic/vue";
 import Timer from './Timer';
+import Tasks from './Tasks';
 
 export default {
   name: "Folder",
@@ -58,6 +60,7 @@ export default {
     IonItem,
     IonLabel,
     Timer,
+    Tasks,
   },
 };
 </script>
