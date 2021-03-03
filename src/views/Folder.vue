@@ -12,17 +12,6 @@
     <ion-content :fullscreen="true">
       <Timer />
       <Tasks />
-      <ion-reorder-group :disabled="false">
-        <!-- Default reorder icon, start aligned items -->
-        <ion-item>
-          <ion-reorder slot="start"></ion-reorder>
-          <ion-label> Item 3 </ion-label>
-        </ion-item>
-        <ion-item>
-          <ion-reorder slot="start"></ion-reorder>
-          <ion-label> Item 4 </ion-label>
-        </ion-item>
-      </ion-reorder-group>
     </ion-content>
   </ion-page>
 </template>

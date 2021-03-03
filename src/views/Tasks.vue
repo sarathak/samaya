@@ -1,20 +1,21 @@
 <template>
-  <div>
+<div class="task-container">
+  <div :style="'width:'+(task_cols.length*200)+'px'">
     <SlickList
       v-model:list="task_cols"
-      axis="x"
       class="task-col-container"
-      group="cols"
+            axis="x"
+      lock-axis="x"
       use-drag-handle
       useWindowAsScrollContainer
     >
       <SlickItem
         v-for="(col, index) in task_cols"
-        :key="index"
+        :key="col.id"
         :index="index"
         class="task-col"
       >
-              <header>
+        <header>
           <DragHandle />
           {{ col.name }}
           ({{ col.items.length }})
@@ -44,11 +45,12 @@
         {{ task_cols }}
     </pre>
   </div>
+  </div>
 </template>
 
 <script>
 import { SlickList, SlickItem } from "vue-slicksort";
-import DragHandle from './lib/DragHandle.vue';
+import DragHandle from "./lib/DragHandle.vue";
 
 import { play, pause } from "ionicons/icons";
 import { mapState } from "vuex";
@@ -58,7 +60,8 @@ export default {
     return {
       task_cols: [
         {
-          name:'todo',
+          name: "todo",
+          id:1,
           items: [
             {
               value: "Apples",
@@ -87,7 +90,8 @@ export default {
           ],
         },
         {
-          name:'completed',
+          name: "completed",
+          id:2,
           items: [
             {
               value: "Potatoes",
@@ -100,6 +104,24 @@ export default {
               height: 114,
               background: "#9b51e1",
               id: 107,
+            },
+          ],
+        },
+        {
+          name: "testing",
+          id:3,
+          items: [
+            {
+              value: "Potatoes 2 ",
+              height: 58,
+              background: "#9b51e1",
+              id: 109,
+            },
+            {
+              value: "Broccoli 2",
+              height: 114,
+              background: "#9b51e1",
+              id: 108,
             },
           ],
         },
@@ -130,16 +152,20 @@ export default {
 </script>
 
 <style scoped>
+.task-container{
+  overflow: auto;
+}
 .task-col-container {
   display: flex;
   align-items: start;
+  border-radius: 20px;
 }
 .task-col {
-  width: 400px;
-  margin: 10px;
-  padding: 10px;
+  width: 200px;
+  padding: 5px;
   background: #eee;
-  border-radius: 20px;
+  align-self: stretch;
+  border-right: 1px solid rgba(0, 0, 0, 0.2);
 }
 .task-col > header {
   display: flex;
@@ -157,5 +183,11 @@ export default {
   flex-direction: column;
 }
 .task {
+  height: 30px;
+  /* border: 1px solid #000; */
+  background: #fff;
+  border-radius: 5px;
+  padding: 5px 15px;
+  margin-bottom: 5px;
 }
 </style>
