@@ -1,129 +1,120 @@
 <template>
-<div class="task-container">
-  <div :style="'width:'+(task_cols.length*200)+'px'">
-    <SlickList
-      v-model:list="task_cols"
-      class="task-col-container"
-            axis="x"
-      lock-axis="x"
-      use-drag-handle
-      useWindowAsScrollContainer
-    >
-      <SlickItem
-        v-for="(col, index) in task_cols"
-        :key="col.id"
-        :index="index"
-        class="task-col"
-      >
-        <header>
-          <DragHandle />
-          {{ col.name }}
-          ({{ col.items.length }})
-        </header>
-        <SlickList
-          v-model:list="col.items"
-          axis="y"
-          class="tasks-list"
-          group="produce"
-        >
-          <SlickItem
-            v-for="(item, index) in col.items"
-            :key="item"
-            :index="index"
-            :item="item"
-            class="task"
-          >
-            <div class="task-inner">
-              {{ item.value }}
-            </div>
-          </SlickItem>
-        </SlickList>
-      </SlickItem>
-    </SlickList>
+  <ion-list class="task-container">
 
-    <pre>
-        {{ task_cols }}
-    </pre>
-  </div>
-  </div>
+    <ion-reorder-group  v-for="group in groups" :key="group.name" :disabled="false" @ionItemReorder="doReorder($event,group)">
+      <ion-list-header>{{group.name}}</ion-list-header>
+
+      <ion-item v-for="task in group.tasks" :key="task.id">
+        <ion-label>
+          {{ task.value }}
+        </ion-label>
+        <ion-reorder slot="end"></ion-reorder>
+      </ion-item>
+    </ion-reorder-group>
+
+
+  </ion-list>
 </template>
 
 <script>
-import { SlickList, SlickItem } from "vue-slicksort";
-import DragHandle from "./lib/DragHandle.vue";
+import {
+  IonIcon,
+  IonItem,
+  IonLabel,
+  IonReorder,
+  IonReorderGroup,
+  IonList,
+  IonListHeader,
+} from "@ionic/vue";
 
 import { play, pause } from "ionicons/icons";
 import { mapState } from "vuex";
+const WEEKDAYS = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 
+const getTasksDate = (date, tasks) => {
+  return tasks.filter(
+    (x) =>
+      x.date.getMonth() == date.getMonth() &&
+      x.date.getFullYear() == date.getFullYear() &&
+      x.date.getDate() == date.getDate()
+  );
+};
 export default {
+  computed: {
+    groups() {
+      const groups = [];
+      for (let i = 0; i < 6; i++) {
+        const date = new Date();
+        date.setDate(date.getDate()+i)
+        groups.push({
+          name: WEEKDAYS[date.getDay()],
+          tasks: getTasksDate(date,this.tasks),
+          date,
+        });
+      }
+      return groups;
+    },
+  },
   data() {
+    let tomorrow = new Date();
+    tomorrow.setDate(7);
     return {
-      task_cols: [
+      tasks: [
         {
-          name: "todo",
-          id:1,
-          items: [
-            {
-              value: "Apples",
-              height: 69,
-              background: "#eb5757",
-              id: 101,
-            },
-            {
-              value: "Bananas",
-              height: 63,
-              background: "#eb5757",
-              id: 102,
-            },
-            {
-              value: "Cherries",
-              height: 87,
-              background: "#eb5757",
-              id: 103,
-            },
-            {
-              value: "Dragon Fruit",
-              height: 71,
-              background: "#eb5757",
-              id: 104,
-            },
-          ],
+          value: "Apples",
+          height: 69,
+          background: "#eb5757",
+          id: 101,
+          date: new Date(),
         },
         {
-          name: "completed",
-          id:2,
-          items: [
-            {
-              value: "Potatoes",
-              height: 58,
-              background: "#9b51e1",
-              id: 106,
-            },
-            {
-              value: "Broccoli",
-              height: 114,
-              background: "#9b51e1",
-              id: 107,
-            },
-          ],
+          value: "Bananas",
+          height: 63,
+          background: "#eb5757",
+          id: 102,
+          date: new Date(),
         },
         {
-          name: "testing",
-          id:3,
-          items: [
-            {
-              value: "Potatoes 2 ",
-              height: 58,
-              background: "#9b51e1",
-              id: 109,
-            },
-            {
-              value: "Broccoli 2",
-              height: 114,
-              background: "#9b51e1",
-              id: 108,
-            },
-          ],
+          value: "Cherries",
+          height: 87,
+          background: "#eb5757",
+          id: 103,
+          date: new Date(),
+        },
+        {
+          value: "Dragon Fruit",
+          height: 71,
+          background: "#eb5757",
+          id: 104,
+          date: new Date(),
+        },
+        {
+          value: "Potatoes",
+          height: 58,
+          background: "#9b51e1",
+          id: 106,
+          date: new Date(),
+        },
+        {
+          value: "Broccoli",
+          height: 114,
+          background: "#9b51e1",
+          id: 107,
+          date: new Date(),
+        },
+        {
+          value: "Potatoes 2 ",
+          height: 58,
+          background: "#9b51e1",
+          id: 109,
+          date: tomorrow,
+        },
+        {
+          value: "Broccoli 2",
+          height: 114,
+          background: "#9b51e1",
+          id: 108,
+          date: tomorrow,
         },
       ],
     };
@@ -139,20 +130,35 @@ export default {
     // }, 1000);
   },
   components: {
-    SlickItem,
-    SlickList,
-    DragHandle,
+    IonList,
+    IonIcon,
+    IonItem,
+    IonLabel,
+    IonReorder,
+    IonReorderGroup,
+    IonListHeader,
   },
   methods: {
-    onInsert(event) {
-      this.items.splice(event.index, 0, event.data);
+    doReorder(event,group) {
+      console.info(event);
+      console.log(
+        "Dragged from index",
+        event.detail.from,
+        "to",
+        event.detail.to,
+        group.name,
+      );
+      const [item] = this.tasks.splice(event.detail.from, 1);
+      item.date = group.date;
+      this.tasks.splice(event.detail.to, 0, item);
+      event.detail.complete();
     },
   },
 };
 </script>
 
 <style scoped>
-.task-container{
+.task-container {
   overflow: auto;
 }
 .task-col-container {
