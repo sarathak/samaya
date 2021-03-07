@@ -15,5 +15,9 @@ export default {
         store.dispatch('stopTimer');
         store.commit('updateMode',timer_mode);
 
+    },
+    moveTask(store,{from,to}){
+        const [item] = store.state.tasks.splice(from, 1);
+        store.state.tasks.splice(to, 0, item);
     }
 }
