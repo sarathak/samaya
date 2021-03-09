@@ -20,6 +20,7 @@ export default {
     },    
     moveTasks(state,task_tree){
         const tasks = [];
+        task_tree.forEach(x=>x.parent_id = null);
         while(task_tree.length){
             const task = task_tree.shift();
             if(task.children ){
@@ -33,5 +34,14 @@ export default {
             tasks.push(task);
         }
         state.tasks = tasks;
+    },
+    addTask(state,{title}){
+        const {tasks} = state;
+        let id = tasks.reduce((prev,task)=>{
+            return Math.max(prev,task.id);
+        },0);
+        const task = {id:id+1,title};
+        tasks.push(task);
+
     }
 }

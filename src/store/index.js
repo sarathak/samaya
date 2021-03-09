@@ -11,23 +11,23 @@ const createNewStore = function () {
             timer_running:false,
             tasks:[
                 {
-                    value: "Apples",
+                    title: "Apples",
                     height: 69,
                     background: "#eb5757",
-                    id: 101,
+                    id: 1,
                     parent_id:null
                   },
                   {
-                    value: "Bananas",
+                    title: "Bananas",
                     height: 63,
                     background: "#eb5757",
-                    id: 102,
+                    id: 2,
                   },
                   {
-                    value: "Cherries",
+                    title: "Cherries",
                     height: 87,
                     background: "#eb5757",
-                    id: 103,
+                    id: 3,
                   },
             ]
         },

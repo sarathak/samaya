@@ -1,34 +1,21 @@
 <template>
   <div>
-    <ion-list class="task-container">
-
-      <ion-item>
-        <ion-label>
-          <ion-button
-            @click="taskEdit()"
-            color="success"
-            shape="round"
-            fill="outline"
-          >
-            <ion-icon slot="start" :md="addOutline" />
-            Add task
-          </ion-button>
-        </ion-label>
-      </ion-item>
-    </ion-list>
-    <pre>
-      {{task_tree}}
-    </pre>
     <Tree :value="task_tree" @input="input">
       <template v-slot:default="{ node, tree, path }">
         <span>
           <b @click="tree.toggleFold(node, path)">
             {{ node.$folded ? "+" : "-" }}
           </b>
-          {{ node.value }}
+          {{ node.title }}
         </span>
       </template>
     </Tree>
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button   @click="taskEdit()">
+        <ion-icon :md="addOutline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+    <pre>{{task_tree}}</pre>
   </div>
 </template>
 
@@ -44,7 +31,7 @@ import {
   popoverController,
 } from "@ionic/vue";
 import { addOutline } from "ionicons/icons";
-import { mapState,mapGetters } from "vuex";
+import { mapState, mapGetters } from "vuex";
 import TaskEdit from "./TaskEdit";
 import { Tree, Fold, Draggable, getPureTreeData } from "he-tree-vue";
 export default {
@@ -107,7 +94,7 @@ export default {
         component: TaskEdit,
         cssClass: "my-custom-class",
         componentProps: {
-          title: "New Title",
+       
         },
       });
       return modal.present();

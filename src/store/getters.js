@@ -3,7 +3,7 @@ export default {
         const tasks = JSON.parse(JSON.stringify(state.tasks));
         const tree_map = {};
         for(let task of tasks){
-            task.children  = []
+            task.children  = [];
             tree_map[task.id] = task;
         }
         for(let task of tasks){
