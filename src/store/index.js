@@ -1,6 +1,7 @@
 import { createStore } from 'vuex'
 import actions from './actions';
 import mutations from './mutations';
+import getters from './getters';
 
 const createNewStore = function () {
     const store = new createStore({
@@ -14,6 +15,7 @@ const createNewStore = function () {
                     height: 69,
                     background: "#eb5757",
                     id: 101,
+                    parent_id:null
                   },
                   {
                     value: "Bananas",
@@ -31,6 +33,7 @@ const createNewStore = function () {
         },
         actions,
         mutations,
+        getters,
     })
     return store;
 }

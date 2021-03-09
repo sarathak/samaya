@@ -1,14 +1,7 @@
 <template>
   <div>
     <ion-list class="task-container">
-      <ion-reorder-group :disabled="false" @ionItemReorder="doReorder($event)">
-        <ion-item v-for="task in tasks" :key="task.id">
-          <ion-label>
-            {{ task.value }}
-          </ion-label>
-          <ion-reorder slot="end"></ion-reorder>
-        </ion-item>
-      </ion-reorder-group>
+
       <ion-item>
         <ion-label>
           <ion-button
@@ -23,13 +16,16 @@
         </ion-label>
       </ion-item>
     </ion-list>
-    <Tree :value="treeData">
+    <pre>
+      {{task_tree}}
+    </pre>
+    <Tree :value="task_tree" @input="input">
       <template v-slot:default="{ node, tree, path }">
         <span>
           <b @click="tree.toggleFold(node, path)">
             {{ node.$folded ? "+" : "-" }}
           </b>
-          {{ node.text }}
+          {{ node.value }}
         </span>
       </template>
     </Tree>
@@ -48,25 +44,24 @@ import {
   popoverController,
 } from "@ionic/vue";
 import { addOutline } from "ionicons/icons";
-import { mapState } from "vuex";
+import { mapState,mapGetters } from "vuex";
 import TaskEdit from "./TaskEdit";
-import {
-  Tree,
-  Fold,
-  Draggable,
-} from "he-tree-vue";
+import { Tree, Fold, Draggable, getPureTreeData } from "he-tree-vue";
 export default {
   data() {
     return {
       addOutline,
       treeData: [
         { text: "node 1" },
+        { text: "node 3" },
+        { text: "node 4" },
+        { text: "node 5" },
         { text: "node 2", children: [{ text: "node 2-1" }] },
       ],
     };
   },
-  computed: mapState({
-    tasks: "tasks",
+  computed: mapGetters({
+    task_tree: "task_tree",
   }),
 
   mounted() {
@@ -89,6 +84,9 @@ export default {
     Tree: Tree.mixPlugins([Draggable, Fold]),
   },
   methods: {
+    input(data) {
+      this.$store.commit("moveTasks", getPureTreeData(data));
+    },
     doReorder(event) {
       console.info(event);
       console.log(
