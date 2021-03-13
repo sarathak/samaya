@@ -15,13 +15,13 @@
       </ion-item>
       <ion-row>
         <ion-col size="3">
-          <ion-button color="danger" fill="solid">
-            <ion-icon :md="trashOutline" />
+          <ion-button @click="remove" color="danger" fill="solid" v-if="!add_new">
+            <ion-icon :md="trashOutline" slot="icon-only" />
           </ion-button>
         </ion-col>
         <ion-col size="9">
           <ion-button type="submit" color="success" fill="solid" expand="block">
-            Add task
+            Save
           </ion-button>
         </ion-col>
       </ion-row>
@@ -39,20 +39,27 @@ import {
   IonButtons,
   IonIcon,
   IonInput,
+  IonRow,
+  IonCol,
+  IonLabel,
   popoverController,
 } from "@ionic/vue";
 import { defineComponent } from "vue";
 import { trashOutline } from "ionicons/icons";
 export default defineComponent({
   name: "Modal",
-  props: {
-    //title: { type: String, default: "Super Modal" },
-  },
+  props: ["parent_id", "task"],
   data() {
     return {
+      task_id: null,
       title: "",
       trashOutline,
     };
+  },
+  computed:{
+    add_new(){
+      return !this.task_id;
+    },
   },
   components: {
     IonContent,
@@ -63,6 +70,9 @@ export default defineComponent({
     IonButtons,
     IonIcon,
     IonInput,
+    IonRow,
+    IonLabel,
+    IonCol,
   },
   methods: {
     dismissModal() {
@@ -70,9 +80,30 @@ export default defineComponent({
     },
     submit(e) {
       e.preventDefault();
-      this.$store.commit("addTask", { title: this.title });
+      this.$store.commit("addTask", {
+        title: this.title,
+        parent_id: this.parent_id,
+        id: this.task_id,
+      });
       popoverController.dismiss();
-      this.title = '';
+      this.title = "";
+    },
+    remove() {
+      this.$store.commit("removeTask", this.task_id);
+      popoverController.dismiss();
+    },
+  },
+  watch: {
+    task: {
+      immediate: true,
+      handler(task) {
+        
+        console.info("task", task);
+        if (task) {
+          this.title = task.title;
+          this.task_id = task.id;
+        } else this.task_id = null;
+      },
     },
   },
 });

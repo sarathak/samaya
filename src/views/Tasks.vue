@@ -3,48 +3,57 @@
     <Tree :value="task_tree" @input="input">
       <template v-slot:default="{ node, tree, path }">
         <span>
-          <b @click="tree.toggleFold(node, path)">
-            {{ node.$folded ? "+" : "-" }}
-          </b>
+          <ion-button
+            fill="outline"
+            v-if="node.children && node.children.length"
+            @click="tree.toggleFold(node, path)"
+          >
+            <ion-icon
+              slot="icon-only"
+              :md="
+                node.$folded
+                  ? chevronDownCircleOutline
+                  : chevronForwardCircleOutline
+              "
+            />
+          </ion-button>
           {{ node.title }}
+          <ion-button @click="taskEdit(node)" color="primary" fill="solid">
+            <ion-icon slot="icon-only" :md="createOutline" />
+          </ion-button>
+          <ion-button @click="taskAdd(node.id)" color="primary" fill="solid">
+            <ion-icon slot="icon-only" :md="addOutline" />
+          </ion-button>
         </span>
       </template>
     </Tree>
     <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-      <ion-fab-button   @click="taskEdit()">
+      <ion-fab-button @click="taskAdd()">
         <ion-icon :md="addOutline"></ion-icon>
       </ion-fab-button>
     </ion-fab>
-    <pre>{{task_tree}}</pre>
+    <pre>{{ task_tree }}</pre>
   </div>
 </template>
 
 <script>
+import { IonIcon, IonButton, popoverController } from "@ionic/vue";
 import {
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonReorder,
-  IonReorderGroup,
-  IonList,
-  IonButton,
-  popoverController,
-} from "@ionic/vue";
-import { addOutline } from "ionicons/icons";
-import { mapState, mapGetters } from "vuex";
+  addOutline,
+  createOutline,
+  chevronForwardCircleOutline,
+  chevronDownCircleOutline,
+} from "ionicons/icons";
+import { mapGetters } from "vuex";
 import TaskEdit from "./TaskEdit";
 import { Tree, Fold, Draggable, getPureTreeData } from "he-tree-vue";
 export default {
   data() {
     return {
       addOutline,
-      treeData: [
-        { text: "node 1" },
-        { text: "node 3" },
-        { text: "node 4" },
-        { text: "node 5" },
-        { text: "node 2", children: [{ text: "node 2-1" }] },
-      ],
+      createOutline,
+      chevronForwardCircleOutline,
+      chevronDownCircleOutline,
     };
   },
   computed: mapGetters({
@@ -61,12 +70,7 @@ export default {
     // }, 1000);
   },
   components: {
-    IonList,
     IonIcon,
-    IonItem,
-    IonLabel,
-    IonReorder,
-    IonReorderGroup,
     IonButton,
     Tree: Tree.mixPlugins([Draggable, Fold]),
   },
@@ -74,27 +78,22 @@ export default {
     input(data) {
       this.$store.commit("moveTasks", getPureTreeData(data));
     },
-    doReorder(event) {
-      console.info(event);
-      console.log(
-        "Dragged from index",
-        event.detail.from,
-        "to",
-        event.detail.to
-      );
-      this.$store.dispatch("moveTask", {
-        from: event.detail.from,
-        to: event.detail.to,
-      });
-
-      event.detail.complete();
-    },
-    async taskEdit() {
+    async taskEdit(task) {
       const modal = await popoverController.create({
         component: TaskEdit,
         cssClass: "my-custom-class",
         componentProps: {
-       
+          task,
+        },
+      });
+      return modal.present();
+    },
+    async taskAdd(parent_id = null) {
+      const modal = await popoverController.create({
+        component: TaskEdit,
+        cssClass: "my-custom-class",
+        componentProps: {
+          parent_id,
         },
       });
       return modal.present();
