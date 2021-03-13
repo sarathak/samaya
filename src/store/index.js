@@ -9,13 +9,13 @@ const createNewStore = function () {
             timer: 25*60,
             timer_mode:'timer',
             timer_running:false,
+            pomodoros :0,
             tasks:[
                 {
                     title: "Apples",
                     height: 69,
                     background: "#eb5757",
-                    id: 1,
-                    parent_id:null
+                    id: 1,                    
                   },
                   {
                     title: "Bananas",
@@ -28,6 +28,7 @@ const createNewStore = function () {
                     height: 87,
                     background: "#eb5757",
                     id: 3,
+                    parent_id:2
                   },
             ]
         },

@@ -1,0 +1,20 @@
+.tree-root{
+ 
+}
+.tree-branch{
+
+}
+.he-tree .tree-node{
+    background: #fff;
+    border-radius: 15px;
+    border:none;
+    min-height: 50px;
+}
+.tree-placeholder{
+    
+}
+.task {
+    height: 50px;
+    padding: 5px 15px ;
+    
+  }

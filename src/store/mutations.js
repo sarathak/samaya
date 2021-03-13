@@ -2,6 +2,7 @@
 export default {
     updateTime(state, time) {
         state.timer = time;
+        // if(time == 0){}
     },
     stopTimer(state) {
         state.timer_running = false;
@@ -17,6 +18,9 @@ export default {
             state.timer = 5 * 60;
         else if (timer_mode == 'brake_long')
             state.timer = 15 * 60;
+    },
+    pomodoroComplete(state){
+        state.pomodoros +=1;
     },
     moveTasks(state, task_tree) {
         const tasks = [];

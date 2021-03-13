@@ -1,32 +1,53 @@
 <template>
   <div>
-    <Tree :value="task_tree" @input="input">
-      <template v-slot:default="{ node, tree, path }">
-        <span>
-          <ion-button
-            fill="outline"
-            v-if="node.children && node.children.length"
-            @click="tree.toggleFold(node, path)"
-          >
-            <ion-icon
-              slot="icon-only"
-              :md="
-                node.$folded
-                  ? chevronDownCircleOutline
-                  : chevronForwardCircleOutline
-              "
-            />
-          </ion-button>
-          {{ node.title }}
-          <ion-button @click="taskEdit(node)" color="primary" fill="solid">
-            <ion-icon slot="icon-only" :md="createOutline" />
-          </ion-button>
-          <ion-button @click="taskAdd(node.id)" color="primary" fill="solid">
-            <ion-icon slot="icon-only" :md="addOutline" />
-          </ion-button>
-        </span>
-      </template>
-    </Tree>
+    <ion-card>
+      <div class="task-list">
+        <Tree :value="task_tree" @input="input">
+          <template v-slot:default="{ node, tree, path }">
+            <div class="task">
+              <div class="task-left">
+                <ion-button
+                  fill="outline"
+                  v-if="node.children && node.children.length"
+                  @click="tree.toggleFold(node, path)"
+                >
+                  <ion-icon
+                    slot="icon-only"
+                    :md="
+                      node.$folded
+                        ? chevronDownCircleOutline
+                        : chevronForwardCircleOutline
+                    "
+                  />
+                </ion-button>
+              </div>
+              <div class="task-center">
+                <ion-text color="dark">
+                  <h4>{{ node.title }}</h4>
+                </ion-text>
+              </div>
+
+              <div class="task-right">
+                <ion-button
+                  @click="taskEdit(node)"
+                  color="primary"
+                  fill="solid"
+                >
+                  <ion-icon slot="icon-only" :md="createOutline" />
+                </ion-button>
+                <ion-button
+                  @click="taskAdd(node.id)"
+                  color="primary"
+                  fill="solid"
+                >
+                  <ion-icon slot="icon-only" :md="addOutline" />
+                </ion-button>
+              </div>
+            </div>
+          </template>
+        </Tree>
+      </div>
+    </ion-card>
     <ion-fab vertical="bottom" horizontal="end" slot="fixed">
       <ion-fab-button @click="taskAdd()">
         <ion-icon :md="addOutline"></ion-icon>
@@ -36,7 +57,7 @@
 </template>
 
 <script>
-import { IonIcon, IonButton, popoverController } from "@ionic/vue";
+import { IonIcon, IonButton, IonCard, popoverController } from "@ionic/vue";
 import {
   addOutline,
   createOutline,
@@ -69,6 +90,7 @@ export default {
     // }, 1000);
   },
   components: {
+    IonCard,
     IonIcon,
     IonButton,
     Tree: Tree.mixPlugins([Draggable, Fold]),
@@ -100,6 +122,19 @@ export default {
   },
 };
 </script>
-
 <style scoped>
+.task-list {
+  background: #f0f4fd;
+  padding: 10px;
+}
+.task {
+  display: flex;
+}
+.task-center {
+  flex-grow: 1;
+  padding: 0 5px;
+}
+.task-center h4 {
+  margin: 4px 2px;
+}
 </style>

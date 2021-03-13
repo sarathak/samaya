@@ -23,6 +23,7 @@ import '@ionic/vue/css/display.css';
 import 'he-tree-vue/dist/he-tree-vue.css' ;
 /* Theme variables */
 import './theme/variables.css';
+import './styles/main.css';
 const store = createNewStore();
 const app = createApp(App)
   .use(IonicVue)
