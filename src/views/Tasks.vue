@@ -32,7 +32,6 @@
         <ion-icon :md="addOutline"></ion-icon>
       </ion-fab-button>
     </ion-fab>
-    <pre>{{ task_tree }}</pre>
   </div>
 </template>
 

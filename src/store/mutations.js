@@ -55,7 +55,7 @@ export default {
     removeTask(state, id) {
         const { tasks } = state;
         if (tasks.find(x => x.parent_id == id))
-            return alert("Please delete all sub taks and try agin")
+            return console.info("Please delete all sub task and try agin")
         state.tasks = tasks.filter(x => x.id != id);
 
     }
