@@ -62,5 +62,8 @@ export default {
             return console.info("Please delete all sub task and try agin")
         state.tasks = tasks.filter(x => x.id != id);
 
+    },
+    tasksUpdate(state,tasks){
+        state.tasks = tasks;
     }
 }

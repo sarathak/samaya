@@ -16,6 +16,7 @@ module.exports = {
     'vue/no-deprecated-slot-attribute': 'off',
     'vue/no-unused-components': 'warn',
     'no-unused-vars': 'warn',
+    'vue/no-unused-vars': 'warn',
     'vue/no-duplicate-attributes': 'warn',
   },
   overrides: [

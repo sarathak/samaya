@@ -6,21 +6,29 @@
           <template v-slot:default="{ node, tree, path }">
             <div class="task">
               <div class="task-left">
-                <ion-button
-                  fill="outline"
-                  v-if="node.children && node.children.length"
+                <!--
+                <button
+                  fill="none"
+                  shape="round"
+                  class="toggle-open"
+                  v-if="node.children.length"
                   @click="tree.toggleFold(node, path)"
                 >
                   <ion-icon
-                    slot="icon-only"
                     :md="
                       node.$folded
                         ? chevronDownCircleOutline
                         : chevronForwardCircleOutline
                     "
                   />
-                </ion-button>
+                </button> -->
+                <ion-checkbox
+                  v-if="!node.children.length"
+                  class="todo-check"
+                  color="success"
+                ></ion-checkbox>
               </div>
+
               <div class="task-center">
                 <ion-text color="dark">
                   <h4>{{ node.title }}</h4>
@@ -28,20 +36,32 @@
               </div>
 
               <div class="task-right">
-                <ion-button
-                  @click="taskEdit(node)"
-                  color="primary"
-                  fill="solid"
-                >
-                  <ion-icon slot="icon-only" :md="createOutline" />
-                </ion-button>
-                <ion-button
-                  @click="taskAdd(node.id)"
-                  color="primary"
-                  fill="solid"
-                >
-                  <ion-icon slot="icon-only" :md="addOutline" />
-                </ion-button>
+                <ion-buttons slot="primary">
+                 
+                  <ion-button color="danger" 
+                   @click="taskEdit(node)"
+                  >
+                    <ion-icon
+                      slot="icon-only"
+                      :md="ellipsisHorizontal"
+                    ></ion-icon>
+                  </ion-button>
+
+                   <!--<ion-button
+                    @click="taskEdit(node)"
+                    color="primary"
+                    fill="solid"
+                  >
+                    <ion-icon slot="icon-only" :md="createOutline" />
+                  </ion-button>
+                  <ion-button
+                    @click="taskAdd(node.id)"
+                    color="primary"
+                    fill="solid"
+                  >
+                    <ion-icon slot="icon-only" :md="addOutline" />
+                  </ion-button>-->
+                </ion-buttons>
               </div>
             </div>
           </template>
@@ -57,12 +77,20 @@
 </template>
 
 <script>
-import { IonIcon, IonButton, IonCard, popoverController } from "@ionic/vue";
+import {
+  IonIcon,
+  IonButton,
+  IonCard,
+  IonButtons,
+  IonCheckbox,
+  popoverController,
+} from "@ionic/vue";
 import {
   addOutline,
   createOutline,
   chevronForwardCircleOutline,
   chevronDownCircleOutline,
+  ellipsisHorizontal,
 } from "ionicons/icons";
 import { mapGetters } from "vuex";
 import TaskEdit from "./TaskEdit";
@@ -74,6 +102,7 @@ export default {
       createOutline,
       chevronForwardCircleOutline,
       chevronDownCircleOutline,
+      ellipsisHorizontal,
     };
   },
   computed: mapGetters({
@@ -93,7 +122,9 @@ export default {
     IonCard,
     IonIcon,
     IonButton,
-    Tree: Tree.mixPlugins([Draggable, Fold]),
+    IonButtons,
+    IonCheckbox,
+    Tree: Tree.mixPlugins([Draggable,]),
   },
   methods: {
     input(data) {
@@ -123,6 +154,21 @@ export default {
 };
 </script>
 <style scoped>
+.task-left {
+}
+.toggle-open {
+  font-size: 35px;
+  background: none;
+  color: var(--ion-color-secondary);
+}
+.toggle-open:active {
+  background: var(--ion-color-light);
+}
+
+.todo-check {
+  width: 35px;
+  height: 35px;
+}
 .task-list {
   background: #f0f4fd;
   padding: 10px;
