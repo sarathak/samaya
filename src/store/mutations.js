@@ -39,17 +39,18 @@ export default {
         }
         state.tasks = tasks;
     },
-    addTask(state, { title,parent_id,id }) {
+    addTask(state,data ) {
         const  tasks = [...state.tasks];
+        const {id } = data;
         if(id) { // edit
             const index = tasks.findIndex(x=>x.id== id);
-            tasks[index] = {...tasks[index],title}
+            tasks[index] = {...tasks[index],...data}
             
         }else{ // add
             let max_id = tasks.reduce((prev, task) => {
                 return Math.max(prev, task.id);
             }, 0);
-            const task = { id: max_id + 1, title,parent_id };
+            const task = { ...data,id: max_id + 1,  };
             tasks.push(task);
         }
         state.tasks = tasks;

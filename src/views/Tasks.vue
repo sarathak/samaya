@@ -26,6 +26,8 @@
                   v-if="!node.children.length"
                   class="todo-check"
                   color="success"
+                  :checked="node.completed"
+                  @update:modelValue="toggleCompleted($event,node.id)"
                 ></ion-checkbox>
               </div>
 
@@ -129,6 +131,12 @@ export default {
   methods: {
     input(data) {
       this.$store.commit("moveTasks", getPureTreeData(data));
+    },
+    toggleCompleted(completed,task_id){
+        this.$store.commit("addTask", {
+        completed,
+        id: task_id,
+      });
     },
     async taskEdit(task) {
       const modal = await popoverController.create({

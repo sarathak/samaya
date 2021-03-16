@@ -20,7 +20,6 @@ export default function dbPlugin(store) {
                 db.tasks.delete(payload);
             }
         }
-
     })
 
 }
