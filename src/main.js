@@ -24,12 +24,13 @@ import 'he-tree-vue/dist/he-tree-vue.css' ;
 /* Theme variables */
 import './theme/variables.css';
 import './styles/main.css';
+import './registerServiceWorker'
 const store = createNewStore();
 const app = createApp(App)
   .use(IonicVue)
   .use(store)
   .use(router);
-  
+
 router.isReady().then(() => {
   app.mount('#app');
 });
