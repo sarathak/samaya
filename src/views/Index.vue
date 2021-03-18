@@ -25,11 +25,6 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
-  IonItem,
-  IonReorder,
-  IonReorderGroup,
-  // IonCard,
-  IonLabel,
 } from "@ionic/vue";
 import Timer from './Timer';
 import Tasks from './Tasks';
@@ -44,10 +39,7 @@ export default {
     IonPage,
     IonTitle,
     IonToolbar,
-    IonReorder,
-    IonReorderGroup,
-    IonItem,
-    IonLabel,
+
     Timer,
     Tasks,
   },

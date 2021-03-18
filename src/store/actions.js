@@ -2,7 +2,7 @@ let timer = null;
 export default {
     startTimer(store,) {
         store.commit('startTimer',);
-        timer = setInterval(() => store.dispatch('updateTime'), 10)
+        timer = setInterval(() => store.dispatch('updateTime'), 1000)
     },
     updateTime(store) {
         const { timer } = store.state;// todo:time 0

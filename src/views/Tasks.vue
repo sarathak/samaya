@@ -3,7 +3,7 @@
     <ion-card>
       <div class="task-list">
         <Tree :value="task_tree" @input="input">
-          <template v-slot:default="{ node, tree, path }">
+          <template v-slot:default="{ node }">
             <div class="task">
               <div class="task-left">
                 <!--
@@ -27,7 +27,7 @@
                   class="todo-check"
                   color="success"
                   :checked="node.completed"
-                  @update:modelValue="toggleCompleted($event,node.id)"
+                  @update:modelValue="toggleCompleted($event, node.id)"
                 ></ion-checkbox>
               </div>
 
@@ -39,17 +39,14 @@
 
               <div class="task-right">
                 <ion-buttons slot="primary">
-                 
-                  <ion-button color="danger" 
-                   @click="taskEdit(node)"
-                  >
+                  <ion-button color="danger" @click="taskEdit(node)">
                     <ion-icon
                       slot="icon-only"
                       :md="ellipsisHorizontal"
                     ></ion-icon>
                   </ion-button>
 
-                   <!--<ion-button
+                  <!--<ion-button
                     @click="taskEdit(node)"
                     color="primary"
                     fill="solid"
@@ -96,7 +93,12 @@ import {
 } from "ionicons/icons";
 import { mapGetters } from "vuex";
 import TaskEdit from "./TaskEdit";
-import { Tree, Fold, Draggable, getPureTreeData } from "he-tree-vue";
+import {
+  Tree,
+  // Fold,
+  Draggable,
+  getPureTreeData,
+} from "he-tree-vue";
 export default {
   data() {
     return {
@@ -126,14 +128,14 @@ export default {
     IonButton,
     IonButtons,
     IonCheckbox,
-    Tree: Tree.mixPlugins([Draggable,]),
+    Tree: Tree.mixPlugins([Draggable]),
   },
   methods: {
     input(data) {
       this.$store.commit("moveTasks", getPureTreeData(data));
     },
-    toggleCompleted(completed,task_id){
-        this.$store.commit("addTask", {
+    toggleCompleted(completed, task_id) {
+      this.$store.commit("addTask", {
         completed,
         id: task_id,
       });
