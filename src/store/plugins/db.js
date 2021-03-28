@@ -6,13 +6,19 @@ export default function dbPlugin(store) {
         tasks: "++id"
     });
     db.tasks.toArray().then((tasks)=>{
-        store.commit('tasksUpdate',tasks);
+        
+        store.commit('tasksUpdate',tasks.sort((a,b)=> (a.order||0) - (b.order||0)));
     })
     store.subscribe(({ type, payload }) => {
         // console.info('update', type, payload)
         if ( ['addTask','moveTasks'].indexOf(type) >-1) {
             const { tasks } = store.state;
-            db.tasks.bulkPut(JSON.parse(JSON.stringify(tasks)));
+            const d = JSON.parse(JSON.stringify(tasks));
+            let order = 0;
+            d.forEach(x => {
+                x.order = order++;
+            });
+            db.tasks.bulkPut(d);
         }
         else if(type == 'removeTask'){
             const { tasks } = store.state;
