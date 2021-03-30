@@ -1,6 +1,10 @@
 import { expect } from 'chai';
+// import {jest} from 'jest';
 import sinon from 'sinon';
 import actions from '@/store/actions';
+jest.mock('@/libs/audio', () => ({
+    playTimerComplete: jest.fn()
+  }));
 const { startTimer, stopTimer, updateMode, updateTime } = actions;
 describe("Actions", () => {
     it('start timer', () => {
@@ -21,6 +25,7 @@ describe("Actions", () => {
         expect(dispatch.args).to.deep.equal([['stopTimer']]);
     });
     it('update time', () => {
+       
         let commit = sinon.spy();
         let dispatch = sinon.spy();
         updateTime({ commit, dispatch, state: { timer: 2 } },)
@@ -48,3 +53,24 @@ describe("Actions", () => {
     });
 
 });
+
+// import { shallowMount } from '@vue/test-utils'
+// import Folder from '@/views/Folder.vue'
+
+// describe('Folder.vue', () => {
+//   it('renders folder view', () => {
+//     const mockRoute = {
+//       params: {
+//         id: 'Outbox'
+//       }
+//     }
+//     const wrapper = shallowMount(Folder, {
+//       global: {
+//         mocks: {
+//           $route: mockRoute
+//         }
+//       }
+//     })
+//     expect(wrapper.text()).toMatch('')
+//   })
+// })

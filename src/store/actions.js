@@ -1,3 +1,5 @@
+import { playTimerComplete } from "@/libs/audio";
+
 let timer = null;
 export default {
     startTimer(store,) {
@@ -10,9 +12,11 @@ export default {
             let { pomodoros, timer_mode } = store.state;// todo:time 0
             pomodoros += 1;
             let mode = timer_mode == 'timer' ? pomodoros % 4 == 0 ? 'brake_long' : 'brake_short' : 'timer';
-            if (timer_mode == 'timer')
+            if (timer_mode == 'timer') {
                 store.commit('pomodoroComplete');
+            }
             store.dispatch('updateMode', mode);
+            playTimerComplete();
         }
         else
             store.commit('updateTime', timer - 1);
