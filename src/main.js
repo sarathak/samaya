@@ -33,4 +33,8 @@ const app = createApp(App)
 
 router.isReady().then(() => {
   app.mount('#app');
+  const worker = new Worker('worker.js');
+  worker.onmessage = ()=>{
+    store.dispatch('timeTick');
+  }
 });

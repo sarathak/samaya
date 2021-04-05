@@ -1,10 +1,18 @@
 import { playTimerComplete } from "@/libs/audio";
+// let worker ;
 
-let timer = null;
 export default {
     startTimer(store,) {
         store.commit('startTimer',);
-        timer = setInterval(() => store.dispatch('updateTime'), 1000)
+       
+        // worker.onmessage = function() {
+        //     store.dispatch('updateTime');
+        // };
+        // timer = setInterval(() => store.dispatch('updateTime'), 1000)
+    },
+    timeTick({state,dispatch}){
+        if(state.timer_running)
+        dispatch('updateTime');
     },
     updateTime(store) {
         const { timer } = store.state;// todo:time 0
@@ -22,7 +30,6 @@ export default {
             store.commit('updateTime', timer - 1);
     },
     stopTimer(store,) {
-        clearInterval(timer);
         store.commit('stopTimer',);
     },
     updateMode(store, timer_mode) {
